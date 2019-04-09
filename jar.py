@@ -6,10 +6,19 @@ from termcolor import colored
 class Book:
     def __init__(self, info):
         self.title = info[1]
-        self.author = info[3]
+        
         self.media = info[14]
         self.tags = info[28].split(", ")
         self.collections = info[29].split(", ")
+
+        # author
+        author = info[3].split(", ")
+        if len(author) == 2:
+            self.authorfirst = author[1]
+            self.authorlast = author[0]
+        else:
+            self.authorfirst = info[3]
+            self.authorlast = ""
 
         # collections
         self.fiction = False 
@@ -92,7 +101,7 @@ class Book:
         else:
             locationString = "On my ereader"
         
-        return colored(self.title, 'blue') + " (" + self.media + ")" + "\nby " + self.author + "\n\n" + "Location: " + locationString + "\n--------------------------------"
+        return colored(self.title, 'blue') + " (" + self.media + ")" + "\nby " + self.authorfirst + " " + self.authorlast + "\n\n" + "Location: " + locationString + "\n--------------------------------"
 
 with open('tbr.csv', 'r') as csvfile:
     tbrreader = csv.reader(csvfile, delimiter=',')
