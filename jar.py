@@ -1,5 +1,7 @@
 import csv
 import random
+import sys
+from termcolor import colored
 
 class Book:
     def __init__(self, info):
@@ -90,7 +92,7 @@ class Book:
         else:
             locationString = "On my ereader"
         
-        return self.title + " (" + self.media + ")" + "\nby " + self.author + "\n\n" + "Location: " + locationString + "\n--------------------------------"
+        return colored(self.title, 'blue') + " (" + self.media + ")" + "\nby " + self.author + "\n\n" + "Location: " + locationString + "\n--------------------------------"
 
 with open('tbr.csv', 'r') as csvfile:
     tbrreader = csv.reader(csvfile, delimiter=',')
