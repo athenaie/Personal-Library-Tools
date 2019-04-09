@@ -6,8 +6,19 @@ class Book:
         self.title = info[1]
         self.author = info[3]
         self.media = info[14]
-        self.tags = info[28].split(",")
-        self.collections = info[29].split(",")
+        self.tags = info[28].split(", ")
+        self.collections = info[29].split(", ")
+
+        # collections
+        self.fiction = False 
+        self.nonfiction = False 
+        self.childrens = False
+        if "Fiction" in self.collections:
+            self.fiction = True
+        if "Non-fiction" in self.collections:
+            self.nonfiction = True
+        if "Children's Books" in self.collections:
+            self.childrens = True
 
         # convoluted location information 
 
@@ -19,7 +30,7 @@ class Book:
             shelves = [s for s in self.tags if "Shelf" in s]
             # if there's a shelf catalogued
             if len(shelves) > 0:
-                self.shelf = shelves[0][7:]
+                self.shelf = shelves[0][6:]
                 # if it's in my apartment
                 if self.shelf == "Home":
                     self.apartment = True
@@ -41,7 +52,7 @@ class Book:
             boxes = [b for b in self.tags if "Box " in b]
             # if there's a box catalogued
             if len(boxes) > 0:
-                self.box = boxes[0][5:]
+                self.box = boxes[0][4:]
                 # no boxes in my apartment
                 self.apartment = False 
                 self.home = True 
@@ -87,21 +98,10 @@ with open('tbr.csv', 'r') as csvfile:
     next(tbrreader)
     for row in tbrreader:
         totaltbr.append(Book(row))
-    total = len(totaltbr)
-    while True:
-        try:
-            numBooks = int(input("How many books would you like from the TBR jar?\n"))
-            if(numBooks <= total):
-                print()
-                break
-            else: 
-                print("\nInvalid number of books, please enter a number less than " + str(total + 1) + "\n")
-        except:
-            print("\nInvalid number of books, please enter a number\n")
 
     while True:
         try:
-            locationChar = str(input("From where (please enter a letter)?\nA) Apartment\nB) Home\nC) Anywhere\n")).upper()
+            locationChar = str(input("From which residence (please enter a letter)?\nA) Apartment\nB) Home\nC) Anywhere\n")).upper()
             if locationChar == "A" or locationChar == "B" or locationChar == "C":
                 print()
                 break
@@ -110,16 +110,51 @@ with open('tbr.csv', 'r') as csvfile:
         except:
                 print("\nInvalid input, please enter A, B, or C\n")
 
+
     if locationChar == "A":
         subtbr = [b for b in totaltbr if b.apartment == True]
     elif locationChar == "B":
         subtbr = [b for b in totaltbr if b.home == True]
     else:
         subtbr = totaltbr
-    
-    books = random.sample(range(0, len(subtbr) - 1), numBooks)
 
+    while True:
+        try:
+            collectionChar = str(input("From which collection?\nA) Fiction\nB) Non-fiction\nC) Children's books\nD) Any collection\n")).upper()
+            if collectionChar == "A" or collectionChar == "B" or collectionChar == "C" or collectionChar == "D":
+                print()
+                break
+            else: 
+                print("\nInvalid character, please enter A, B, C, or D\n")
+        except:
+                print("\nInvalid input, please enter A, B, C, or D\n")
+                    
+    if collectionChar == "A":
+        subtbr = [b for b in subtbr if b.fiction == True]
+    elif collectionChar == "B":
+        subtbr = [b for b in subtbr if b.nonfiction == True]
+    elif collectionChar == "C":
+        subtbr = [b for b in subtbr if b.childrens == True]
+    else:
+        subtbr = subtbr 
+
+    if (len(subtbr) == 0):
+        print("Sorry, there are no books that meet those criteria.")
+        exit()
+
+    while True:
+        try:
+            numBooks = int(input("How many books would you like from the TBR jar?\n"))
+            if(numBooks <= len(subtbr)):
+                print()
+                break
+            else: 
+                print("\nInvalid number of books, please enter a number less than " + str(len(subtbr) + 1) + "\n")
+        except:
+            print("\nInvalid number of books, please enter a number\n")
+    
     print("--------------------------------")
+    books = random.sample(range(0, len(subtbr)), numBooks)
     for book in books:
         print(subtbr[book])
 
