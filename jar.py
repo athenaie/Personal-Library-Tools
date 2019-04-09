@@ -44,6 +44,8 @@ class Book:
                     locationString = "Boxed somewhere"
                 else:
                     locationString = "At home in Box " + self.box
+        else:
+            locationString = "On my ereader"
         
         return self.title + " (" + self.media + ")" + "\nby " + self.author + "\n\n" + "Location: " + locationString + "\n--------------------------------"
 
