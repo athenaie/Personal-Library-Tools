@@ -126,14 +126,19 @@ with open('library.csv', 'r') as csvfile:
 
     if locationChar == "A":
         subtbr = [b for b in totaltbr if b.apartment == True]
+        locationPhrase = "in My Apartment"
     elif locationChar == "B":
         subtbr = [b for b in totaltbr if b.home == True]
+        locationPhrase = "at Home"
     elif locationChar == "C":
         subtbr = [b for b in totaltbr if b.ereader == False]
+        locationPhrase = "(Physical Books)"
     elif locationChar == "D":
         subtbr = [b for b in totaltbr if b.ereader == True]
+        locationPhrase = "(Ebooks)"
     else:
         subtbr = totaltbr
+        locationPhrase = "In My Library"
 
 
     while True:
@@ -149,16 +154,22 @@ with open('library.csv', 'r') as csvfile:
                     
     if collectionChar == "A":
         subtbr = [b for b in subtbr if b.fiction == True]
+        collectionPhrase = "Fiction Books"
     elif collectionChar == "B":
         subtbr = [b for b in subtbr if b.nonfiction == True]
+        collectionPhrase = "Non-fiction Books"
     elif collectionChar == "C":
         subtbr = [b for b in subtbr if b.childrens == True]
+        collectionPhrase = "Children's Books"
     elif collectionChar == "D":
         subtbr = [b for b in subtbr if b.read == True]
+        collectionPhrase = "Read Books"
     elif collectionChar == "E":
         subtbr = [b for b in subtbr if b.toread == True]
+        collectionPhrase = "Unread Books"
     else:
-        subtbr = subtbr 
+        subtbr = subtbr
+        collectionPhrase = "All the Books"
 
     if (len(subtbr) == 0):
         print("Sorry, there are no books that meet those criteria.")
@@ -175,6 +186,9 @@ with open('library.csv', 'r') as csvfile:
         pages = pages + book.pages
 
     avgpages = int(float(pages) / float(len(subtbr)))
+
+    print(str(collectionPhrase) + " " + str(locationPhrase))
+    print("================================\n")
 
     if givepercent:
         totalpages = 0
