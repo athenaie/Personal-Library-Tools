@@ -104,7 +104,7 @@ class Book:
         else:
             locationString = "On my ereader"
         
-        return colored(self.title, 'blue') + " (" + self.media + ")" + "\nby " + self.authorfirst + " " + self.authorlast + "\n\n" + "Location: " + locationString + "\n--------------------------------"
+        return colored(self.title, 'blue') + " (" + self.media + ", " + str(self.pages) + "pg)" + "\nby " + self.authorfirst + " " + self.authorlast + "\n\n" + "Location: " + locationString + "\n--------------------------------"
 
 with open('library.csv', 'r') as csvfile:
     tbrreader = csv.reader(csvfile, delimiter=',')
