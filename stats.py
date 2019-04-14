@@ -21,11 +21,21 @@ class Book:
             self.authorfirst = info[3]
             self.authorlast = ""
 
-        # pages
+        # physical  
         try:
             self.pages = int(info[21])
         except:
             self.pages = 0
+
+        try:
+            dimensionsinfo = info[20].split(" ")
+            dimensions = [float(dimensionsinfo[0]), float(dimensionsinfo[2]), float(dimensionsinfo[4])]
+            self.dimensions = sorted(dimensions, reverse = True)
+            if dimensionsinfo[5] is "inches":
+                for dimension in self.dimensions:
+                    dimension = float(float(dimension)*2.54)
+        except:
+            self.dimensions = [0.0,0.0,0.0]
 
         # collections
         self.fiction = False 
@@ -181,9 +191,22 @@ with open('library.csv', 'r') as csvfile:
         givepercent = True 
 
     pages = 0
+    thickness = 0
+    totalthickness = 0
 
     for book in subtbr:
         pages = pages + book.pages
+        thickness = thickness + book.dimensions[2]
+
+    for book in totaltbr:
+        totalthickness = totalthickness + book.dimensions[2]
+
+    if (int(thickness) > 1):
+        thickness = float(float(thickness)/float(100.0))
+        totalthickness = float(float(totalthickness)/float(100.0))
+        unitname = "m"
+    else:
+        unitname = "cm"
 
     avgpages = int(float(pages) / float(len(subtbr)))
 
@@ -196,20 +219,24 @@ with open('library.csv', 'r') as csvfile:
             totalpages = totalpages + book.pages
         percentpages = int((float(pages)/float(totalpages))*100)
         percentbooks = int((float(len(subtbr))/float(len(totaltbr)))*100)
+        percentthickness = int((float(thickness))/(float((totalthickness)))*100)
         print("Number of books: " + str(len(subtbr)) + " (" + str(percentbooks) + "%)")
         print("Total number of pages: " + str(pages) + " (" + str(percentpages) + "%)")
         print("Average number of pages: " + str(avgpages))
+        print("Height of stack (" + unitname + "): " + "{0:.2f}".format(thickness) + " (" + str(percentthickness) + "%)")
 
     else:
         print("Number of books: " + str(len(subtbr)))
         print("Total number of pages: " + str(pages))
         print("Average number of pages: " + str(avgpages))
+        print("Height of stack (" + unitname + "): " + "{0:.2f}".format(thickness))
  
     pagesarr = []
     for book in subtbr:
         pagesarr.append(book.pages)
 
     # print the longest book
+    longest = None
     maxpages = 0
     for book in subtbr:
         if book.pages > maxpages:
@@ -223,7 +250,7 @@ with open('library.csv', 'r') as csvfile:
     plt.title("Frequency of Book Length")
     plt.xlabel("Pages")
     plt.ylabel("Books")
-    plt.show()
+    # plt.show()
 
 
 """     while True:
