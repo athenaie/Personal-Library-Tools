@@ -209,11 +209,22 @@ with open('library.csv', 'r') as csvfile:
     for book in subtbr:
         pagesarr.append(book.pages)
 
+    # print the longest book
+    maxpages = 0
+    for book in subtbr:
+        if book.pages > maxpages:
+            maxpages = book.pages
+            longest = book
+    print("\nThe longest book is:")
+    print("--------------------------------")
+    print(longest)
+
     plt.hist(pagesarr, bins='auto')
     plt.title("Frequency of Book Length")
     plt.xlabel("Pages")
     plt.ylabel("Books")
     plt.show()
+
 
 """     while True:
         try:
