@@ -116,6 +116,6 @@ tags = list(filter(None, tags))
 tagsString = ""
 print("This book has " + str(len(tags)) + " tags of a possible " + str(count) + ".\n")
 for tag in tags:
-    tagsString += "\"" + tag + "\", "
+    tagsString += tag + ", "
 print(tagsString)
 pyperclip.copy(tagsString)
